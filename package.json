@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "html-pdf": "^3.0.1",
     "uuid": "^9.0.0"
   }
 }

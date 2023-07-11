@@ -36,4 +36,11 @@ def executeScript(path:str, drivers:list) -> list:
 
 executeScript('filteredTests.json', drivers)
 
-# print(sucesos)
+data = {
+    "sucesos" : sucesos
+}
+
+#Crear JSON con sucesos
+if len(sucesos) > 0:
+    with open('data.json', "w", encoding='utf-') as file:
+        json.dump(data, file, ensure_ascii=False)

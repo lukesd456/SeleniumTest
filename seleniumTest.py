@@ -7,6 +7,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException, InvalidSessionIdException
 import copy
 import uuid
+import json
 
 class Navigator(webdriver.Remote, By):
 
@@ -20,17 +21,15 @@ class Navigator(webdriver.Remote, By):
         self.test = test
         self.sucesos:list = []
 
-    def registrarSuceso(self, tipoDeTest:str, indice:int, mensajeEsperado:list, action:dict):
+    def registrarSuceso(self, tipoDeTest:str, indice:int, mensajeEsperado:list, action:dict, rutina:list):
 
         reporte = {
             "tipoDeTest" : tipoDeTest,
             "indice" : indice,
             "mensajeEsperado" : mensajeEsperado,
-            "action" : action
+            "action" : action,
+            "rutina" : rutina
         }
-        
-        path = uuid.uuid4()
-        self.element.screenshot(f'./{path}.png')
 
         self.sucesos.append(reporte)
 
@@ -84,6 +83,9 @@ class Navigator(webdriver.Remote, By):
 
         indice:int = int(t["indice"])
         tipoDeTest:str = t["tipoDeTest"]
+
+        print(tipoDeTest)
+
         mensajesEsperados:list = copy.deepcopy(t["mensajesEsperados"])
         rutina:list = t["rutina"]
 
@@ -99,7 +101,6 @@ class Navigator(webdriver.Remote, By):
                 typeTarget:str = action["target"]["detail"]
 
                 value:str = action["value"]
-
                 validador:bool = action["validador"]
 
                 #Seleccionar elemento:
@@ -119,7 +120,7 @@ class Navigator(webdriver.Remote, By):
                             print('Test Inverso Exitoso')
                             break
                         except AssertionError:
-                            self.registrarSuceso(tipoDeTest, indice, mensajesEsperados, action)
+                            self.registrarSuceso(tipoDeTest, indice, mensajesEsperados, action, rutina)
                             print('suceso registrado')
                             break
 
